@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
+from data_loader import load_competitor_data
 from dotenv import load_dotenv
 from groq import Groq
 from hindsight_client import Hindsight
@@ -43,6 +44,13 @@ def home():
 def analyze(data: dict):
     competitor = data.get("competitor", "Unknown competitor")
     information = data.get("information", "")
+    datasets = load_competitor_data()
+
+    competitor_data = {}
+
+    for name, df in datasets.items():
+        if competitor.lower() in name.lower():
+            competitor_data[name] = df.head(10).to_dict(orient="records")
 
     if not information:
         raise HTTPException(
@@ -71,6 +79,9 @@ Competitor:
 
 Current competitor information:
 {information}
+
+Kaggle market data:
+{competitor_data}
 
 Previous remembered information:
 {memories}

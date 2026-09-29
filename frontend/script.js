@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://signalhunter.onrender.com";;
+const API_BASE_URL = "https://signalhunter.onrender.com";
 
 /* =========================================================
    HELPERS
